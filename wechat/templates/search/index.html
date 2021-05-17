@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="/static/search/css/bootstrap.css">
+
+    <!--使得超链接都在新标签页中打开-->
+    <base target="_blank">
+
+    <style>
+        .content {
+            padding-top: 90px;
+            text-align: center;
+        }
+
+        .title {
+            margin-left: 50px;
+            margin-bottom: 30px;
+            font-size: 20px;
+            line-height: 20px;
+            text-align: left;
+        }
+
+        .article_title {
+            padding-left: 7px;
+            padding-right: 7px;
+            font-size: 18px;
+            line-height: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .row {
+            margin-left: 30px;
+            margin-right: 30px;
+            margin-bottom: 40px;
+            border-top: 1px solid rgba(182, 180, 180, 0.507);
+            /* border-left: 1px solid rgba(182, 180, 180, 0.507); --动态显示*/
+
+        }
+
+        .row .row {
+            margin-top: 10px;
+            margin-bottom: 0px;
+        }
+
+        [class*="col-"] {
+            padding-left: 0px;
+            padding-right: 0px;
+            border-right: 1px solid rgba(182, 180, 180, 0.507);
+            height: 280px;
+        }
+
+        a:link,
+        a:visited {
+            color: black;
+        }
+
+        a:hover,
+        a:active {
+            color: rgb(116, 114, 114);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <a href="#" class="navbar-brand">微信公众号</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">热门推荐</a></li>
+                    <li><a href="#">公众号搜索</a></li>
+                    <li><a href="#">个性化</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content">
+
+        <div class="title">
+            <p>今日热门文章</p>
+        </div>
+        <div class="row">
+            <!-- 动态显示，连接数据库数据 -->
+        <!-- {%for i in linklist%}
+        
+            <a href={{i.urls}}>
+                <div class="col-md-4">
+                    <img src={{i.image}}
+                    class="img-responsive">
+                    <p class="article_title">{{i.title}}</p>
+                </div>
+            </a>
+    
+        {%endfor%} 
+        </div>-->
+        <!-- 静态显示，爬虫数据对接后会被上方动态取代 -->
+        <div class="row">
+            <a href="https://mp.weixin.qq.com/s/V6HGe6JXDRMu5Tp-W0ldsg">
+                <div class="col-md-4" style="border-left: 1px solid rgba(182, 180, 180, 0.507)!important;">
+                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaemey8cia3LQksTAZibJ3lmgd1cJx7ZibKRicGNqIpmuO85Um4Kskg19phjl2V0uM9zica3ibDM3suTxWA/0?wx_fmt=jpeg"
+                        class="img-responsive">
+                    <p class="article_title">影 · 间 · 交 · 大</p>
+                </div>
+            </a>
+
+            <a href="https://mp.weixin.qq.com/s/nzMy5AeanQrljdfM1S_UqQ">
+                <div class="col-md-4">
+                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaemey8cia3LQksTAZibJ3lmg6LgNpd7fFxckZctEYfqEkTcoZmfF6U07K9bGxiaibG0AeXsEv7aIBz1Q/0?wx_fmt=jpeg"
+                        class="img-responsive">
+                    <p class="article_title">权威发布丨上海交通大学2021年在上海市综合评价录取改革试点招生简章</p>
+                </div>
+            </a>
+
+            <a href="https://mp.weixin.qq.com/s/NI29CHhQwa_jwqnDE0LGVw">
+                <div class="col-md-4">
+                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpZlfIVTEjtROaCR5LHO53RV8Bb1jGMm2IcR3XPBxIgVSssecBCT47WFSLDCW1xbscoWwz4hkHH5WQ/0?wx_fmt=jpeg"
+                        class="img-responsive">
+                    <p class="article_title">终极预告！交小牛带着表情包，解锁校园开放周暨招生咨询活动！</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="row">
+            <a href="https://mp.weixin.qq.com/s/VecnR0YoaCH-aVdsCoc_Pw">
+                <div class="col-md-4" style="border-left: 1px solid rgba(182, 180, 180, 0.507);">
+                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpbe5sPYRXZDW4VoheAfegdCgkzB94QJFzmcTmoAav28gByCoC4mXrGkaxGrv7w1YKKic6PeI04U4yQ/0?wx_fmt=jpeg"
+                        class="img-responsive">
+                    <p class="article_title">13年了！少年仍在，山河无恙</p>
+                </div>
+            </a>
+
+            <a href="https://mp.weixin.qq.com/s/sdvVOCw6R3xwPTLC5bHkvQ">
+                <div class="col-md-4">
+                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpacYOutMdQH5vsibRJCibuG9KiaZ8wpMwepI8Va5AdAvC8YkwyibiannXQjjvzwH0rMR6libhRPusEcjfKQ/0?wx_fmt=jpeg"
+                        class="img-responsive">
+                    <p class="article_title">致敬这位交大人！隐姓埋名50年，社区里的“傻老头”身份惊人</p>
+                </div>
+            </a>
+
+            <a href="https://mp.weixin.qq.com/s/fpER4DvmLc75dD-qQHWIEg">
+                <div class="col-md-4">
+                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaBpTX7yLVLpS9wNRicQk7vf3LSfh4bj8bdjI7fZRXliamSudX8rhib0Gq3xIBIpmPbga5CYmGgN9h2A/0?wx_fmt=jpeg"
+                        class="img-responsive">
+                    <p class="article_title">美出新高度！交大多处地标修复亮相，你去看了吗？</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>
