@@ -1,0 +1,84 @@
+import requests
+import time
+from urllib import parse
+from lxml import etree
+from pprint import pprint
+from gevent import monkey
+from gevent.pool import Pool
+from getAccount import public_search_api
+
+def process_list_content(content: list):
+    if content:
+        content_str = str()
+        for a_str in content:
+            content_str += a_str
+        return content_str
+    else:
+        return None
+ 
+def process_timestamp(content: int):
+    return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(content))
+ 
+def process_html_str(html_str: str):
+    html_str = etree.HTML(html_str)
+    li_list = html_str.xpath('//ul[contains(@class,"news-list")]/li')
+    article_list = list()
+    for li in li_list:
+        article = dict()
+        title = li.xpath('.//div[contains(@class,"txt-box")]/h3/a//text()')
+        article['title'] = title[0] if title else None
+        url = li.xpath('.//div[contains(@class,"txt-box")]/h3/a/@href')
+        article['url'] = "https://weixin.sogou.com" + url[0] if url else None
+        images = li.xpath('.//div[contains(@class,"img-box")]//img/@src')
+        article['images'] = ['https:' + i for i in images] if images else None
+        abstract = li.xpath('.//p[contains(@class,"txt-info")]/text()')
+        article['abstract'] = process_list_content(abstract)
+        timestamp = li.xpath('.//div[@class="s-p"]/@t')
+        article['publish_date'] = process_timestamp(int(timestamp[0])) if timestamp else None
+        article_list.append(article)
+    return article_list 
+ 
+def process_prepare_work(public_name: str):
+    public_name = parse.quote(public_name)
+    base_url = "https://weixin.sogou.com/weixin?type=2&s_from=input&query={}&ie=utf8&_sug_=n&_sug_type_=&page={}"
+    url_list = [base_url.format(public_name, i) for i in range(1, 11)]
+    return url_list 
+ 
+def process_request(url):
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.89 Safari/537.36",
+    }
+    try:
+        response = requests.get(url=url, headers=headers)
+        if response.ok:
+            article_s = process_html_str(response.text)
+            return article_s
+    except Exception:
+        pass
+ 
+ 
+def public_article(public_name: str):
+    url_list = process_prepare_work(public_name)
+    pool = Pool(3)
+    article_list = pool.map(process_request, url_list)
+    a = list()
+    for a_ in article_list:
+        for a__ in a_:
+            a.append(a__)
+    return a  
+
+def run():
+    public_name = input("请输入你要查找的公众号：")
+    public_info = public_search_api(public_name)
+    print("公众号信息：")
+    pprint(public_info)
+    num = input("是否查询该作者的文章：1>是 2>否 :")
+    if num == "1":
+        article_list = public_article(public_name)
+        pprint(article_list)
+ 
+    else:
+        print("欢迎再次使用")
+
+if __name__ == "__main__":
+    run()
