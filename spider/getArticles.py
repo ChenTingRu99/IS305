@@ -1,13 +1,15 @@
-import requests
 import time
 from urllib import parse
 from lxml import etree
 from pprint import pprint
 from gevent import monkey
+monkey.patch_all()
 from gevent.pool import Pool
+import requests     #导入顺序，否则会报错
 from getAccount import public_search_api
 
-def process_list_content(content: list):
+# 列表转字符串
+def get_list_content(content: list):
     if content:
         content_str = str()
         for a_str in content:
@@ -15,32 +17,41 @@ def process_list_content(content: list):
         return content_str
     else:
         return None
- 
+
+# 处理时间戳，获得文章推送具体时间，精确到秒 
 def process_timestamp(content: int):
     return time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(content))
- 
+
+# 文章信息
 def process_html_str(html_str: str):
     html_str = etree.HTML(html_str)
     li_list = html_str.xpath('//ul[contains(@class,"news-list")]/li')
     article_list = list()
     for li in li_list:
         article = dict()
+        # 文章标题
         title = li.xpath('.//div[contains(@class,"txt-box")]/h3/a//text()')
         article['title'] = title[0] if title else None
+        # 文章链接
         url = li.xpath('.//div[contains(@class,"txt-box")]/h3/a/@href')
         article['url'] = "https://weixin.sogou.com" + url[0] if url else None
+        # 文章首图
         images = li.xpath('.//div[contains(@class,"img-box")]//img/@src')
         article['images'] = ['https:' + i for i in images] if images else None
+        # 文章摘要
         abstract = li.xpath('.//p[contains(@class,"txt-info")]/text()')
-        article['abstract'] = process_list_content(abstract)
+        article['abstract'] = get_list_content(abstract)
+        # 文章推送时间，10位时间戳
         timestamp = li.xpath('.//div[@class="s-p"]/@t')
         article['publish_date'] = process_timestamp(int(timestamp[0])) if timestamp else None
         article_list.append(article)
     return article_list 
- 
-def process_prepare_work(public_name: str):
+
+# 解析目标地址 
+def resolve_url(public_name: str):
     public_name = parse.quote(public_name)
     base_url = "https://weixin.sogou.com/weixin?type=2&s_from=input&query={}&ie=utf8&_sug_=n&_sug_type_=&page={}"
+    # 未登录时只能获取10页结果，即当前公众号的100篇文章
     url_list = [base_url.format(public_name, i) for i in range(1, 11)]
     return url_list 
  
@@ -50,16 +61,18 @@ def process_request(url):
     }
     try:
         response = requests.get(url=url, headers=headers)
+        # 响应返回的数据
         if response.ok:
             article_s = process_html_str(response.text)
             return article_s
     except Exception:
-        pass
- 
+        pass 
  
 def public_article(public_name: str):
-    url_list = process_prepare_work(public_name)
+    url_list = resolve_url(public_name)
+    # 进程池中创建三个进程
     pool = Pool(3)
+    # 遍历url列表，获取文章信息
     article_list = pool.map(process_request, url_list)
     a = list()
     for a_ in article_list:
@@ -76,7 +89,6 @@ def run():
     if num == "1":
         article_list = public_article(public_name)
         pprint(article_list)
- 
     else:
         print("欢迎再次使用")
 
