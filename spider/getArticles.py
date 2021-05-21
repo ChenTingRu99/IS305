@@ -29,29 +29,35 @@ def process_html_str(html_str: str):
     article_list = list()
     for li in li_list:
         article = dict()
-        # 文章标题
-        title = li.xpath('.//div[contains(@class,"txt-box")]/h3/a//text()')
-        article['title'] = title[0] if title else None
-        # 文章链接
-        url = li.xpath('.//div[contains(@class,"txt-box")]/h3/a/@href')
-        article['url'] = "https://weixin.sogou.com" + url[0] if url else None
-        # 文章首图
-        images = li.xpath('.//div[contains(@class,"img-box")]//img/@src')
-        article['images'] = ['https:' + i for i in images] if images else None
-        # 文章摘要
-        abstract = li.xpath('.//p[contains(@class,"txt-info")]/text()')
-        article['abstract'] = get_list_content(abstract)
-        # 文章推送时间，10位时间戳
-        timestamp = li.xpath('.//div[@class="s-p"]/@t')
-        article['publish_date'] = process_timestamp(int(timestamp[0])) if timestamp else None
-        article_list.append(article)
+        # 筛选爬虫结果
+        account = li.xpath('.//a[contains(@class,"account")]/text()')
+        article['account'] = get_list_content(account)
+        if article['account'] == public_info['public_name']:
+            # 文章标题
+            title = li.xpath('.//div[contains(@class,"txt-box")]/h3/a//text()')
+            article['title'] = title[0] if title else None
+            # 文章链接
+            url = li.xpath('.//div[contains(@class,"txt-box")]/h3/a/@href')
+            article['url'] = "https://weixin.sogou.com" + url[0] if url else None
+            # 文章首图
+            images = li.xpath('.//div[contains(@class,"img-box")]//img/@src')
+            article['images'] = ['https:' + i for i in images] if images else None
+            # 文章摘要
+            abstract = li.xpath('.//p[contains(@class,"txt-info")]/text()')
+            article['abstract'] = get_list_content(abstract)
+            # 文章推送时间，10位时间戳
+            timestamp = li.xpath('.//div[@class="s-p"]/@t')
+            article['publish_date'] = process_timestamp(int(timestamp[0])) if timestamp else None
+            article_list.append(article)
+        else:
+            continue
     return article_list 
 
 # 解析目标地址 
 def resolve_url(public_name: str):
     public_name = parse.quote(public_name)
     base_url = "https://weixin.sogou.com/weixin?type=2&s_from=input&query={}&ie=utf8&_sug_=n&_sug_type_=&page={}"
-    # 未登录时只能获取10页结果，即当前公众号的100篇文章
+    # 未登录时只能获取10页结果，即当前公众号关键字的100篇文章
     url_list = [base_url.format(public_name, i) for i in range(1, 11)]
     return url_list 
  
@@ -78,9 +84,11 @@ def public_article(public_name: str):
     for a_ in article_list:
         for a__ in a_:
             a.append(a__)
+    # 本次爬取到的文章数量
+    print (len(a))
     return a  
 
-def run():
+if __name__ == "__main__":
     public_name = input("请输入你要查找的公众号：")
     public_info = public_search_api(public_name)
     print("公众号信息：")
@@ -91,6 +99,3 @@ def run():
         pprint(article_list)
     else:
         print("欢迎再次使用")
-
-if __name__ == "__main__":
-    run()
