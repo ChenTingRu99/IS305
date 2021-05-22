@@ -11,9 +11,6 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="/static/search/css/bootstrap.css">
 
-    <!--使得超链接都在新标签页中打开-->
-    <base target="_blank">
-
     <style>
         .content {
             padding-top: 90px;
@@ -81,7 +78,13 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">热门推荐</a></li>
                     <li><a href="#">公众号搜索</a></li>
-                    <li><a href="#">个性化</a></li>
+                    {% if request.user.is_active %}
+                    <li><a>{{ request.user.username }}</a></li>
+                    <li><a href="/logout/">退出</a></li>
+                    {% else %}
+                    <li><a href="/login/">登录</a></li>
+                    <li><a href="/regist/">注册</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -94,9 +97,9 @@
         </div>
         <div class="row">
             <!-- 动态显示，连接数据库数据 -->
-        <!-- {%for i in linklist%}
+            <!-- {%for i in linklist%}
         
-            <a href={{i.urls}}>
+            <a href={{i.urls}} target="_blank">
                 <div class="col-md-4">
                     <img src={{i.image}}
                     class="img-responsive">
@@ -106,59 +109,59 @@
     
         {%endfor%} 
         </div>-->
-        <!-- 静态显示，爬虫数据对接后会被上方动态取代 -->
-        <div class="row">
-            <a href="https://mp.weixin.qq.com/s/V6HGe6JXDRMu5Tp-W0ldsg">
-                <div class="col-md-4" style="border-left: 1px solid rgba(182, 180, 180, 0.507)!important;">
-                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaemey8cia3LQksTAZibJ3lmgd1cJx7ZibKRicGNqIpmuO85Um4Kskg19phjl2V0uM9zica3ibDM3suTxWA/0?wx_fmt=jpeg"
-                        class="img-responsive">
-                    <p class="article_title">影 · 间 · 交 · 大</p>
-                </div>
-            </a>
+            <!-- 静态显示，爬虫数据对接后会被上方动态取代 -->
+            <div class="row">
+                <a href="https://mp.weixin.qq.com/s/V6HGe6JXDRMu5Tp-W0ldsg" target="_blank">
+                    <div class="col-md-4" style="border-left: 1px solid rgba(182, 180, 180, 0.507)!important;">
+                        <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaemey8cia3LQksTAZibJ3lmgd1cJx7ZibKRicGNqIpmuO85Um4Kskg19phjl2V0uM9zica3ibDM3suTxWA/0?wx_fmt=jpeg"
+                            class="img-responsive">
+                        <p class="article_title">影 · 间 · 交 · 大</p>
+                    </div>
+                </a>
 
-            <a href="https://mp.weixin.qq.com/s/nzMy5AeanQrljdfM1S_UqQ">
-                <div class="col-md-4">
-                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaemey8cia3LQksTAZibJ3lmg6LgNpd7fFxckZctEYfqEkTcoZmfF6U07K9bGxiaibG0AeXsEv7aIBz1Q/0?wx_fmt=jpeg"
-                        class="img-responsive">
-                    <p class="article_title">权威发布丨上海交通大学2021年在上海市综合评价录取改革试点招生简章</p>
-                </div>
-            </a>
+                <a href="https://mp.weixin.qq.com/s/nzMy5AeanQrljdfM1S_UqQ" target="_blank">
+                    <div class="col-md-4">
+                        <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaemey8cia3LQksTAZibJ3lmg6LgNpd7fFxckZctEYfqEkTcoZmfF6U07K9bGxiaibG0AeXsEv7aIBz1Q/0?wx_fmt=jpeg"
+                            class="img-responsive">
+                        <p class="article_title">权威发布丨上海交通大学2021年在上海市综合评价录取改革试点招生简章</p>
+                    </div>
+                </a>
 
-            <a href="https://mp.weixin.qq.com/s/NI29CHhQwa_jwqnDE0LGVw">
-                <div class="col-md-4">
-                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpZlfIVTEjtROaCR5LHO53RV8Bb1jGMm2IcR3XPBxIgVSssecBCT47WFSLDCW1xbscoWwz4hkHH5WQ/0?wx_fmt=jpeg"
-                        class="img-responsive">
-                    <p class="article_title">终极预告！交小牛带着表情包，解锁校园开放周暨招生咨询活动！</p>
-                </div>
-            </a>
+                <a href="https://mp.weixin.qq.com/s/NI29CHhQwa_jwqnDE0LGVw" target="_blank">
+                    <div class="col-md-4">
+                        <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpZlfIVTEjtROaCR5LHO53RV8Bb1jGMm2IcR3XPBxIgVSssecBCT47WFSLDCW1xbscoWwz4hkHH5WQ/0?wx_fmt=jpeg"
+                            class="img-responsive">
+                        <p class="article_title">终极预告！交小牛带着表情包，解锁校园开放周暨招生咨询活动！</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="row">
+                <a href="https://mp.weixin.qq.com/s/VecnR0YoaCH-aVdsCoc_Pw" target="_blank">
+                    <div class="col-md-4" style="border-left: 1px solid rgba(182, 180, 180, 0.507);">
+                        <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpbe5sPYRXZDW4VoheAfegdCgkzB94QJFzmcTmoAav28gByCoC4mXrGkaxGrv7w1YKKic6PeI04U4yQ/0?wx_fmt=jpeg"
+                            class="img-responsive">
+                        <p class="article_title">13年了！少年仍在，山河无恙</p>
+                    </div>
+                </a>
+
+                <a href="https://mp.weixin.qq.com/s/sdvVOCw6R3xwPTLC5bHkvQ" target="_blank">
+                    <div class="col-md-4">
+                        <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpacYOutMdQH5vsibRJCibuG9KiaZ8wpMwepI8Va5AdAvC8YkwyibiannXQjjvzwH0rMR6libhRPusEcjfKQ/0?wx_fmt=jpeg"
+                            class="img-responsive">
+                        <p class="article_title">致敬这位交大人！隐姓埋名50年，社区里的“傻老头”身份惊人</p>
+                    </div>
+                </a>
+
+                <a href="https://mp.weixin.qq.com/s/fpER4DvmLc75dD-qQHWIEg" target="_blank">
+                    <div class="col-md-4">
+                        <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaBpTX7yLVLpS9wNRicQk7vf3LSfh4bj8bdjI7fZRXliamSudX8rhib0Gq3xIBIpmPbga5CYmGgN9h2A/0?wx_fmt=jpeg"
+                            class="img-responsive">
+                        <p class="article_title">美出新高度！交大多处地标修复亮相，你去看了吗？</p>
+                    </div>
+                </a>
+            </div>
         </div>
-
-        <div class="row">
-            <a href="https://mp.weixin.qq.com/s/VecnR0YoaCH-aVdsCoc_Pw">
-                <div class="col-md-4" style="border-left: 1px solid rgba(182, 180, 180, 0.507);">
-                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpbe5sPYRXZDW4VoheAfegdCgkzB94QJFzmcTmoAav28gByCoC4mXrGkaxGrv7w1YKKic6PeI04U4yQ/0?wx_fmt=jpeg"
-                        class="img-responsive">
-                    <p class="article_title">13年了！少年仍在，山河无恙</p>
-                </div>
-            </a>
-
-            <a href="https://mp.weixin.qq.com/s/sdvVOCw6R3xwPTLC5bHkvQ">
-                <div class="col-md-4">
-                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpacYOutMdQH5vsibRJCibuG9KiaZ8wpMwepI8Va5AdAvC8YkwyibiannXQjjvzwH0rMR6libhRPusEcjfKQ/0?wx_fmt=jpeg"
-                        class="img-responsive">
-                    <p class="article_title">致敬这位交大人！隐姓埋名50年，社区里的“傻老头”身份惊人</p>
-                </div>
-            </a>
-
-            <a href="https://mp.weixin.qq.com/s/fpER4DvmLc75dD-qQHWIEg">
-                <div class="col-md-4">
-                    <img src="http://mmbiz.qpic.cn/sz_mmbiz_jpg/926dS7RBTpaBpTX7yLVLpS9wNRicQk7vf3LSfh4bj8bdjI7fZRXliamSudX8rhib0Gq3xIBIpmPbga5CYmGgN9h2A/0?wx_fmt=jpeg"
-                        class="img-responsive">
-                    <p class="article_title">美出新高度！交大多处地标修复亮相，你去看了吗？</p>
-                </div>
-            </a>
-        </div>
-    </div>
 </body>
 
 </html>
