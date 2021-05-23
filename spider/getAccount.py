@@ -1,4 +1,5 @@
 import requests
+import pymysql
 from urllib import parse
 from lxml import etree
 from pprint import pprint
@@ -26,9 +27,6 @@ def process_html_str(html_str):
         # 微信号
         wechat_id = li.xpath('.//p[contains(@class, "info")]/label/text()')
         item["wechat_id"] = wechat_id[0] if wechat_id else None
-        # 二维码
-        publish_qrcode = li.xpath('.//div[contains(@class,"ew-pop")]//span[@class="pop"]/img[1]/@src')
-        item["public_qrcode"] = publish_qrcode[0] if publish_qrcode else None
         # 头像
         publish_image = li.xpath('.//div[contains(@class,"ew-pop")]//span[@class="pop"]/img[2]/@src')
         item["public_image"] = "https:" + publish_image[0] if publish_image else None
@@ -62,11 +60,37 @@ def public_search_api(public_name):
         pprint("No{}:{}".format(public_info.index(info), info["public_name"]))
     num = int(input("请选择要查询的公众号:"))
     return public_info[num]
+
+# 保存公众号信息到数据库
+def __save__(data):
+    # 修改数据库连接配置
+    db = pymysql.connect(host='localhost', user='root', password='041220', port=3306, db='spiders')
+    cursor = db.cursor()
+    wID = data['wechat_id']
+    keys = ', '.join(data.keys())
+    values = ', '.join(['%s'] * len(data))
+    cursor.execute('''SELECT * FROM Accounts WHERE wechat_id = \"{wechatid}\";'''.format(wechatid=wID))
+    AccountInfo = cursor.fetchone()
+    # 防止重复存取
+    if AccountInfo == None:
+        try:
+            sql = '''INSERT INTO Accounts ({keys}) VALUES ({values});'''.format(keys=keys, values=values)
+            cursor.execute(sql, tuple(data.values()))
+            db.commit()
+            print('Successful')
+        except Exception as e:
+            print(e)
+            db.rollback()
+        db.close()
+    else:
+        pprint("Existed record.")
  
 def run():
     # 获取公众号名称
     public_name = input("请输入你要查找的公众号：")
     public_info = public_search_api(public_name)
+    # 存储爬取结果
+    __save__(public_info)
     pprint(public_info)
  
 if __name__ == "__main__":
