@@ -36,7 +36,7 @@ def process_html_str(html_str: str):
         if article['account'] == public_info['public_name']:
             # 文章标题
             title = li.xpath('.//div[contains(@class,"txt-box")]/h3/a//text()')
-            article['title'] = title[0] if title else None
+            article['title'] = get_list_content(title)  # 获取完整标题
             # 文章链接
             url = li.xpath('.//div[contains(@class,"txt-box")]/h3/a/@href')
             article['url'] = "https://weixin.sogou.com" + url[0] if url else None
@@ -91,7 +91,7 @@ def public_article(public_name: str):
 
 # 保存公众号文章信息到数据库
 def __save__(data_list):
-    db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db='spiders')
+    db = pymysql.connect(host='localhost', user='root', password='041220', port=3306, db='spiders')
     cursor = db.cursor()
     account = public_info['public_name']
     # 一号一表
