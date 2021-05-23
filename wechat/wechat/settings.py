@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'wechat.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'wechat',
+        'NAME': 'spiders',
         'USER': 'root',
         'PASSWORD': '123456',
         'HOST': 'localhost',

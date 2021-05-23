@@ -1,6 +1,6 @@
 from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
-from .models import Links
+from .models import Articles
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -8,7 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 def index(request):
-    linklist = Links.objects.all()
+    linklist = Articles.objects.all()
     return render(request, 'search/index.html', {'linklist': linklist})
 
 

@@ -97,19 +97,19 @@
         </div>
         <div class="row">
             <!-- 动态显示，连接数据库数据 -->
-            <!-- {%for i in linklist%}
-        
-            <a href={{i.urls}} target="_blank">
+            <!-- 之后做到在model中使用auth_user表中的用户搜索记录OneToOneField链接其他table读文章 -->
+            {%for i in linklist%}
+
+            <a href={{i.url}} target="_blank">
                 <div class="col-md-4">
-                    <img src={{i.image}}
-                    class="img-responsive">
+                    <img src={{i.images}} class="img-responsive">
                     <p class="article_title">{{i.title}}</p>
                 </div>
             </a>
-    
-        {%endfor%} 
-        </div>-->
-            <!-- 静态显示，爬虫数据对接后会被上方动态取代 -->
+
+            {%endfor%}
+        </div>
+        <!-- 静态显示，爬虫数据对接后会被上方动态取代 
             <div class="row">
                 <a href="https://mp.weixin.qq.com/s/V6HGe6JXDRMu5Tp-W0ldsg" target="_blank">
                     <div class="col-md-4" style="border-left: 1px solid rgba(182, 180, 180, 0.507)!important;">
@@ -161,7 +161,7 @@
                     </div>
                 </a>
             </div>
-        </div>
+        </div>-->
 </body>
 
 </html>

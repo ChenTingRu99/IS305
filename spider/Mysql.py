@@ -3,11 +3,11 @@ import pymysql
 # 公众号信息表
 class Mysqldb:
     def __init__(self):
-        self.db = pymysql.connect(host='localhost', user='root', password='041220', port=3306)
+        self.db = pymysql.connect(host='localhost', user='root', password='123456', port=3306)
         self.cursor = self.db.cursor()
         self.cursor.execute("CREATE DATABASE IF NOT EXISTS spiders DEFAULT CHARACTER SET utf8")
 
-        self.dbconn = pymysql.connect(host='localhost', user='root', password='041220', port=3306, db='spiders')
+        self.dbconn = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db='spiders')
         self.dbcursor = self.dbconn.cursor()
         self.dbcursor.execute('''CREATE TABLE IF NOT EXISTS Accounts 
             (public_name    VARCHAR(255)    NOT NULL, 

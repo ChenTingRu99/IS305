@@ -64,7 +64,7 @@ def public_search_api(public_name):
 # 保存公众号信息到数据库
 def __save__(data):
     # 修改数据库连接配置
-    db = pymysql.connect(host='localhost', user='root', password='041220', port=3306, db='spiders')
+    db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db='spiders')
     cursor = db.cursor()
     wID = data['wechat_id']
     keys = ', '.join(data.keys())
