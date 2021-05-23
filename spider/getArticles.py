@@ -1,11 +1,12 @@
 import time
+import pymysql
 from urllib import parse
 from lxml import etree
 from pprint import pprint
 from gevent import monkey
 monkey.patch_all()
 from gevent.pool import Pool
-import requests     #导入顺序，否则会报错
+import requests     # 导入顺序，否则会报错
 from getAccount import public_search_api
 
 # 列表转字符串
@@ -86,7 +87,41 @@ def public_article(public_name: str):
             a.append(a__)
     # 本次爬取到的文章数量
     print (len(a))
-    return a  
+    return a 
+
+# 保存公众号文章信息到数据库
+def __save__(data_list):
+    db = pymysql.connect(host='localhost', user='root', password='041220', port=3306, db='spiders')
+    cursor = db.cursor()
+    account = public_info['public_name']
+    # 一号一表
+    cursor.execute('''CREATE TABLE IF NOT EXISTS {pName} 
+                (account        VARCHAR(255)    NOT NULL,
+                 title          VARCHAR(255)    NOT NULL, 
+                 url            VARCHAR(2083)    NOT NULL, 
+                 images         VARCHAR(255)    NOT NULL,
+                 abstract       VARCHAR(255),
+                 publish_date   VARCHAR(255)    NOT NULL,
+                 PRIMARY KEY (title));'''.format(pName=account))
+    print("初始化成功")
+    for data in data_list:
+        title = data['title']
+        keys = ', '.join(data.keys())
+        values = ', '.join(['%s'] * len(data))
+        cursor.execute('''SELECT * FROM {pName} WHERE title = \"{title}\";'''.format(pName=account, title=title))
+        Article = cursor.fetchone()
+        # 防止重复存取
+        if Article == None:
+            try:
+                sql = '''INSERT INTO {pName} ({keys}) VALUES ({values});'''.format(pName=account, keys=keys, values=values)
+                cursor.execute(sql, tuple(data.values()))
+                db.commit()
+                print('Successful')
+            except Exception as e:
+                print(e)
+                db.rollback()
+    # 插入数据和关闭数据库连接的嵌套关系
+    db.close() 
 
 if __name__ == "__main__":
     public_name = input("请输入你要查找的公众号：")
@@ -96,6 +131,7 @@ if __name__ == "__main__":
     num = input("是否查询该作者的文章：1>是 2>否 :")
     if num == "1":
         article_list = public_article(public_name)
+        __save__(article_list)
         pprint(article_list)
     else:
         print("欢迎再次使用")
