@@ -84,6 +84,16 @@ def __save__(data):
         db.close()
     else:
         pprint("Existed record.")
+
+def keyword_search_api(keyword:str):
+    
+    account_infos = public_search(keyword)
+
+    # store accounts
+    for info in account_infos:
+        __save__(info)
+
+    return account_infos
  
 def run():
     # 获取公众号名称

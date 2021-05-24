@@ -123,6 +123,16 @@ def __save__(data_list):
     # 插入数据和关闭数据库连接的嵌套关系
     db.close() 
 
+def get_articles_api(public_name:str, print:bool = False):
+
+    article_list = public_article(public_name)
+    __save__(article_list)
+    
+    if print:
+        pprint(article_list)
+
+    return article_list
+
 if __name__ == "__main__":
     public_name = input("请输入你要查找的公众号：")
     public_info = public_search_api(public_name)
@@ -130,8 +140,7 @@ if __name__ == "__main__":
     pprint(public_info)
     num = input("是否查询该作者的文章：1>是 2>否 :")
     if num == "1":
-        article_list = public_article(public_name)
-        __save__(article_list)
-        pprint(article_list)
+        get_articles_api(public_name, print = True)
+
     else:
         print("欢迎再次使用")

@@ -4,6 +4,9 @@ from .models import Articles
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
+from ...spider.getAccount import keyword_search_api
+from ...spider.getArticles import get_articles_api
+
 # Create your views here.
 
 
@@ -49,3 +52,31 @@ def regist(request):
 def log_out(request):
     logout(request)
     return redirect('/')
+
+
+# search account by keyword
+# data: keyword
+# render directly or return json?
+def search_account(request):
+
+    if request.method == 'GET':
+        keyword = request.GET.get('keyword')
+        result_list = keyword_search_api(keyword) # search account
+        return render(request, 'search/searchResult.html', {'search_result': result_list})
+    return render(request, 'search/search.html')
+
+
+# show articles of the selected account
+# data: account_name
+# render?
+def show_article(request):
+
+    if request.method == 'GET':
+        acc_name = request.GET.get('account_name')
+        articles = get_articles_api(acc_name)
+        return render(request, 'search/showArticles.html', {'articles': articles})
+
+    return render(request, 'search/search.html')
+
+
+
