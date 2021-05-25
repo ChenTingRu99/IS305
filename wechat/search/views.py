@@ -4,8 +4,12 @@ from .models import Articles
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
-from ...spider.getAccount import keyword_search_api
-from ...spider.getArticles import get_articles_api
+import os
+SPIDER_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))
+import sys
+sys.path.append(SPIDER_PATH)
+from spider.getAccount import keyword_search_api
+from spider.getArticles import get_articles_api
 
 # Create your views here.
 
