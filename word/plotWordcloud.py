@@ -27,7 +27,7 @@ def generate_wordcloud(text):
     wc.generate(text)
 
     # 生成的词云图像保存到本地
-    wc.to_file(path.join(d, "Images/test.png"))
+    wc.to_file(path.join(d, "Images/wordout.png"))
 
     # 显示图像
     plt.imshow(wc, interpolation='bilinear')

@@ -26,13 +26,11 @@ def word_segment(text):
     '''
     通过jieba进行分词并通过空格分隔,返回分词后的结果
     '''
-    # 计算每个词出现的频率，并存入txt文件
     stopwords = stopwordslist('./stopwords.txt')
     jieba_word = jieba.cut(text, cut_all=False)  # cut_all是分词模式，True是全模式，False是精准模式，默认False
     data=[]
     for x in jieba_word:
         if x not in stopwords:
             data.append(x)
-    print(data)
     seg_list = ' '.join(data)
     return seg_list

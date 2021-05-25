@@ -41,3 +41,8 @@ python manage.py runserver 0.0.0.0:8000 启动
 
 ### 2021-05-23
 王玮：文章词频分析，使用时可以在doc文件夹下添加自己所要分析的txt文档，在image文件夹下输出相应词云图
+
+### 2021-05-25
+王玮：完善词云分析功能，通过url爬取文章内容并存入txt中。使用时在main程序里修改chromedriver地址。
+chromedriver下载（http://npm.taobao.org/mirrors/chromedriver/）要和自己的chrome浏览器版本匹配，下载完成后把.exe复制进入chrome的application文件夹以及python的安装文件夹，最后把chrome的application路径添加到环境变量PATH中。
+待解决问题：url时效性，需要实时调取数据库里的url
