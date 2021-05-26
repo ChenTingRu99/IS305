@@ -110,11 +110,18 @@ def __save__(data_list):
         values = ', '.join(['%s'] * len(data))
         cursor.execute('''SELECT * FROM {pName} WHERE title = \"{title}\";'''.format(pName=account, title=title))
         Article = cursor.fetchone()
-        # 防止重复存取
         if Article == None:
             try:
                 sql = '''INSERT INTO {pName} ({keys}) VALUES ({values});'''.format(pName=account, keys=keys, values=values)
                 cursor.execute(sql, tuple(data.values()))
+                db.commit()
+                print('Successful')
+            except Exception as e:
+                print(e)
+                db.rollback()
+        else:
+            try:
+                cursor.execute('''UPDATE {pName} SET url = \"{url}\" WHERE title = \"{title}\";'''.format(pName=account, url=data['url'], title=title))
                 db.commit()
                 print('Successful')
             except Exception as e:
