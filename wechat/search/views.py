@@ -1,4 +1,4 @@
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import Articles
 from django.contrib.auth.models import User
@@ -8,8 +8,9 @@ import os
 SPIDER_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))
 import sys
 sys.path.append(SPIDER_PATH)
-from spider.getAccount import keyword_search_api
 from spider.getArticles import get_articles_api
+from spider.getAccount import keyword_search_api
+
 
 # Create your views here.
 

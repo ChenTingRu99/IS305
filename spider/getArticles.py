@@ -33,7 +33,7 @@ def process_html_str(html_str: str):
         # 筛选爬虫结果
         account = li.xpath('.//a[contains(@class,"account")]/text()')
         article['account'] = get_list_content(account)
-        if article['account'] == public_info['public_name']:
+        if article['account'] == public_name:
             # 文章标题
             title = li.xpath('.//div[contains(@class,"txt-box")]/h3/a//text()')
             article['title'] = get_list_content(title)  # 获取完整标题
@@ -93,7 +93,7 @@ def public_article(public_name: str):
 def __save__(data_list):
     db = pymysql.connect(host='localhost', user='root', password='041220', port=3306, db='spiders')
     cursor = db.cursor()
-    account = public_info['public_name']
+    account = public_name
     # 一号一表
     cursor.execute('''CREATE TABLE IF NOT EXISTS {pName} 
                 (account        VARCHAR(255)    NOT NULL,
@@ -130,7 +130,10 @@ def __save__(data_list):
     # 插入数据和关闭数据库连接的嵌套关系
     db.close() 
 
-def get_articles_api(public_name:str, print:bool = False):
+def get_articles_api(acc_name:str, print:bool = False):
+
+    global public_name
+    public_name = acc_name
 
     article_list = public_article(public_name)
     __save__(article_list)
@@ -143,6 +146,7 @@ def get_articles_api(public_name:str, print:bool = False):
 if __name__ == "__main__":
     public_name = input("请输入你要查找的公众号：")
     public_info = public_search_api(public_name)
+    public_name = public_info['public_name']
     print("公众号信息：")
     pprint(public_info)
     num = input("是否查询该作者的文章：1>是 2>否 :")
