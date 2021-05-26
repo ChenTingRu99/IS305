@@ -51,5 +51,8 @@ chromedriver下载（http://npm.taobao.org/mirrors/chromedriver/）要和自己�
 王玮：updata word part 更新链接获取的形式
 
 ### 2021-05-26
+陈婷如：首页词云的调用和展示（搜索过后才展示图片这个我真的做不出来哈哈哈哈
+
+### 2021-05-26
 
 记录：记录本周工作进展，讨论下一阶段开发任务以及本周项目展示安排
