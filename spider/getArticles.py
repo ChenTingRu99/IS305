@@ -121,7 +121,7 @@ def __save__(data_list):
                 db.rollback()
         else:
             try:
-                cursor.execute('''UPDATE {pName} SET url = \"{url}\";'''.format(pName=account, url=data['url']))
+                cursor.execute('''UPDATE {pName} SET url = \"{url}\" WHERE title = \"{title}\";'''.format(pName=account, url=data['url'], title=title))
                 db.commit()
                 print('Successful')
             except Exception as e:
