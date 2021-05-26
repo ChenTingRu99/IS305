@@ -31,3 +31,35 @@ class Articles(models.Model):
     class Meta:
         managed = False
         db_table = '上海交通大学'
+
+
+class Base(models.Model):
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def setDb_table(Class, tableName):
+        class Meta:
+            db_table = tableName
+
+        attrs = {
+            '__module__': Class.__module__,
+            'Meta': Meta
+        }
+        return type(tableName, (Class,), attrs)
+
+
+def table_model_factory(table_name):
+    class TableModel(models.Model):
+        account = models.CharField(max_length=255)
+        title = models.CharField(primary_key=True, max_length=255)
+        url = models.CharField(max_length=2083)
+        images = models.CharField(max_length=255)
+        abstract = models.CharField(max_length=255, blank=True, null=True)
+        publish_date = models.CharField(max_length=255)
+
+        class Meta:
+            db_table = table_name
+            managed = False
+
+    return TableModel

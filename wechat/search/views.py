@@ -1,6 +1,6 @@
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from .models import Articles
+from .models import Articles, table_model_factory
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -8,16 +8,19 @@ import os
 SPIDER_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))
 import sys
 sys.path.append(SPIDER_PATH)
-from spider.getArticles import get_articles_api
 from spider.getAccount import keyword_search_api
-
-
+from spider.getArticles import get_articles_api
+from search.models import Base
 # Create your views here.
 
 
 def index(request):
     linklist = Articles.objects.all()
     return render(request, 'search/index.html', {'linklist': linklist})
+
+
+def search(request):
+    return render(request,'search/search.html')
 
 
 def logins(request):
@@ -62,24 +65,27 @@ def log_out(request):
 # search account by keyword
 # data: keyword
 # render directly or return json?
-def search_account(request):
 
-    if request.method == 'GET':
-        keyword = request.GET.get('keyword')
-        result_list = keyword_search_api(keyword) # search account
-        return render(request, 'search/searchResult.html', {'search_result': result_list})
-    return render(request, 'search/search.html')
 
 
 # show articles of the selected account
 # data: account_name
 # render?
 def show_article(request):
-
     if request.method == 'GET':
-        acc_name = request.GET.get('account_name')
+        acc_name = request.GET.get('keyword')
+        if not acc_name:
+            return render(request, 'search/search.html')
+        print(f'acc_name: {acc_name}')
         articles = get_articles_api(acc_name)
-        return render(request, 'search/showArticles.html', {'articles': articles})
+        JsonResponse({'articles': articles})
+    tableNames = acc_name
+    new_N = table_model_factory(tableNames)
+    print(new_N)
+    linklist = new_N.objects.all()
+    print(linklist)
+    return render(request, 'search/search.html', {'linklist': linklist})
+
 
     return render(request, 'search/search.html')
 
