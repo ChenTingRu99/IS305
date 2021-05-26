@@ -5,19 +5,29 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
 import os
-SPIDER_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))
 import sys
+WORD_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir))
+sys.path.append(WORD_PATH)
+from word.word_main import word_main
+
+SPIDER_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))
 sys.path.append(SPIDER_PATH)
 from spider.getAccount import keyword_search_api
 from spider.getArticles import get_articles_api
+
+
 
 # Create your views here.
 
 
 def index(request):
     linklist = Articles.objects.all()
-    return render(request, 'search/index.html', {'linklist': linklist})
-
+    if request.method == "POST":
+        word_url=request.POST.get("word_url")
+        word_url=[word_url]
+        word_main(word_url)
+    return render(request, 'search/index.html', {'linklist': linklist[0:6]})
+     
 
 def logins(request):
     if request.method == 'POST':

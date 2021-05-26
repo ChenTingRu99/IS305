@@ -4,7 +4,7 @@ from urllib import parse
 from lxml import etree
 from pprint import pprint
 from gevent import monkey
-monkey.patch_all()
+#monkey.patch_all()
 from gevent.pool import Pool
 import requests     # 导入顺序，否则会报错
 from .getAccount import public_search_api

@@ -6,5 +6,7 @@ urlpatterns = [
     path('regist/', views.regist),  # 注册
     path('logout/', views.log_out),  # 登出
     path('search/', views.search_account), # 搜索公众号
-    path('showArticle/', views.show_article) # 展示选中公众号的文章
+    path('showArticle/', views.show_article), # 展示选中公众号的文章
+    
+    
 ]
