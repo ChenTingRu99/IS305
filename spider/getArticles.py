@@ -7,7 +7,7 @@ from gevent import monkey
 monkey.patch_all()
 from gevent.pool import Pool
 import requests     # 导入顺序，否则会报错
-from getAccount import public_search_api
+from .getAccount import public_search_api
 
 # 列表转字符串
 def get_list_content(content: list):
