@@ -1,6 +1,8 @@
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from .models import Articles, table_model_factory
+from .tools import BaiduPaginator
+from django.core.paginator import Paginator
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -71,7 +73,7 @@ def log_out(request):
 # show articles of the selected account
 # data: account_name
 # render?
-def show_article(request):
+def show_article(request, page=1):
     if request.method == 'GET':
         acc_name = request.GET.get('keyword')
         if not acc_name:
@@ -84,10 +86,16 @@ def show_article(request):
     print(new_N)
     linklist = new_N.objects.all()
     print(linklist)
-    return render(request, 'search/search.html', {'linklist': linklist})
+# 产生分页器
+    paginator = BaiduPaginator(linklist, 8)
+    print(paginator.count)
+    print(paginator.per_page)
+    print(page)
+    # 返回第page页的数据
+    pager = paginator.page(page)
+    pager.page_range = paginator.custom_range(paginator.num_pages, page, 5)
 
-
-    return render(request, 'search/search.html')
+    return render(request, 'search/search.html', locals())
 
 
 

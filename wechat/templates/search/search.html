@@ -17,8 +17,7 @@
     <script type="text/javascript" src="/static/search/js/jquery.min.js"></script>
 	<script type="text/javascript" src="/static/search/js/modernizr.js"></script>
     <script type="text/javascript" src="/static/search/js/main.js"></script>
-    <!--使得超链接都在新标签页中打开-->
-    <base target="_blank">
+
 
     <style>
         .content {
@@ -142,10 +141,11 @@
 						</div>
 						<table border="0" cellspacing="0" cellpadding="0" class="defaultTable defaultTable2">
 							<tbody>
-							{% for i  in linklist %}
+							{% for i  in pager.object_list %}
+
 							<tr>
 								<td class="t_1">{{ i.account}}</td>
-								<td class="t_2"><a href="{{ i.url }}">{{ i.title }}</a></td>
+								<td class="t_2"><a href="{{ i.url }}" target="_blank">{{ i.title }}</a></td>
 								<td class="t_3">{{ i.publish_date }}</td>
 
                             {% endfor %}
@@ -159,9 +159,10 @@
 								<a class="pagePre"><i class="ico-pre">&nbsp;</i></a>
                                 {% for current in pager.page_range %}
                                     {% if pager.number == current %}
-                                        <a href="{% url 'App:main2' cid=cid page=current %}" class="pagenumb cur">{{ current }}</a>
+                                        <a href="search.html?page=current" class="pagenumb cur">{{ current }}</a>
+
                                     {% else %}
-                                        <a href="{% url 'App:main2' cid=cid page=current %}" class="pagenumb">{{ current }}</a>
+                                        <a href="search.html?page=current" class="pagenumb">{{ current }}</a>
                                     {% endif %}
                                 {% endfor %}
 								<a href="#" class="pagenext"><i class="ico-next">&nbsp;</i></a>

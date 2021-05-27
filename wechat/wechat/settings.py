@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'search',
 ]
 
+# AUTH_USER_MODEL = 'search.UserInfo'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -85,6 +87,7 @@ DATABASES = {
         'PORT': '3306'
     }
 }
+
 
 
 # Password validation

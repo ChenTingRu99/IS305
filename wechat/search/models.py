@@ -6,6 +6,9 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import User
+
+from django.contrib.auth.models import AbstractUser
 
 
 class Accounts(models.Model):
@@ -51,6 +54,8 @@ class Base(models.Model):
 
 def table_model_factory(table_name):
     class TableModel(models.Model):
+        # user = models.OneToOneField(User, on_delete=models.DO_NOTHING)
+        # major = models.TextField(default='', blank=True)
         account = models.CharField(max_length=255)
         title = models.CharField(primary_key=True, max_length=255)
         url = models.CharField(max_length=2083)
@@ -63,3 +68,6 @@ def table_model_factory(table_name):
             managed = False
 
     return TableModel
+
+
+
