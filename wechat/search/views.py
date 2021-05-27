@@ -74,7 +74,6 @@ def log_out(request):
 def show_article(request, page=1):
     if request.method == 'GET':
         acc_name = request.GET.get('keyword')
-        userid = request.user.id
         if not acc_name:
             return render(request, 'search/search.html')
         print(f'acc_name: {acc_name}')
@@ -82,16 +81,18 @@ def show_article(request, page=1):
         JsonResponse({'articles': articles})
     tableNames = acc_name
     new_N = table_model_factory(tableNames)
-    
-    current_user=User.objects.get(id=userid)
-    history = current_user.first_name
-    
-    if history != '':
-        User.objects.filter(id=userid).update(first_name=Concat(Value(history),Value(',')))    
-        history = User.objects.get(id=userid).first_name
-        User.objects.filter(id=userid).update(first_name=Concat(Value(history),Value(str(acc_name))))
-    else:
-        User.objects.filter(id=userid).update(first_name=Value(str(acc_name)))
+
+    if request.user.is_active:
+        userid = request.user.id
+        current_user=User.objects.get(id=userid)
+        history = current_user.first_name
+        
+        if history != '':
+            User.objects.filter(id=userid).update(first_name=Concat(Value(history),Value(',')))    
+            history = User.objects.get(id=userid).first_name
+            User.objects.filter(id=userid).update(first_name=Concat(Value(history),Value(str(acc_name))))
+        else:
+            User.objects.filter(id=userid).update(first_name=Value(str(acc_name)))
 
     linklist = new_N.objects.all()
     

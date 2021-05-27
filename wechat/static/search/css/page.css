@@ -121,13 +121,13 @@
 .Mian-cont-btn .operateBtn a.modify:focus {
 	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 3px rgba(54, 32, 0, .6);
           box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 3px rgba(54, 32, 0, .6);}
-.searchBar { position: absolute; top: 17px; right: 20px;}
-.searchBar .srhTxt { border: 1px solid #d8d8d8; height: 20px; padding: 6px 34px 6px 6px; width: 207px;}
-.searchBar .srhBtn { position: absolute; top: 7px; right: 8px; width: 20px; height: 19px; background: url(../images/ico_fabu_other.png) no-repeat -1px -97px;}
+.searchBar { position: absolute; top: 12px; left: 30px;}
+.searchBar .srhTxt { border: 1px solid #d8d8d8; height: 30px; padding: 10px 50px 10px 10px; width: 207px;}
+.searchBar .srhBtn { position: absolute; top: 4px; left: 224px; width: 24px; height: 24px; background: url(../image/search.png) no-repeat -1px -97px;}
 
 .super-label { height: auto; margin: 0 2% 19px; font-size: 14px;}
 .super-label a { display: block; float: left; position: relative; padding: 0 1%; height: 26px; border: 1px solid #eae8f0; border-radius: 3px; -moz-border-radius: 3px; -webkit-border-radius: 3px; line-height: 26px; margin-right: 1%; color: #454545; background: #fff;}
-.super-label a em { display: block; width: 16px; height: 16px; background: url(../images/ico_fabu_close.png) no-repeat; position: absolute; top: -5px; right: -6px;}
+.super-label a em { display: block; width: 16px; height: 16px; background: url(../image/search.png) no-repeat; position: absolute; top: -5px; right: -6px;}
 
 .Mian-cont-wrap { margin: 0 2%; background: #fff; border: 1px solid #dbd9e1;}
 .defaultTab-T {background: #fdfdfd; border-bottom: 1px solid #f1eff6;}

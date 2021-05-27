@@ -66,7 +66,7 @@ def table_model_factory(table_name):
         class Meta:
             db_table = table_name
             managed = False
-
+            ordering = ('publish_date','title')
     return TableModel
 
 
