@@ -91,7 +91,7 @@ def public_article(public_name: str):
 
 # 保存公众号文章信息到数据库
 def __save__(data_list):
-    db = pymysql.connect(host='localhost', user='root', password='041220', port=3306, db='spiders')
+    db = pymysql.connect(host='localhost', user='root', password='123456', port=3306, db='spiders')
     cursor = db.cursor()
     account = public_info['public_name']
     # 一号一表
