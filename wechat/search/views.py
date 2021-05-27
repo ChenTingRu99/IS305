@@ -24,11 +24,13 @@ from spider.getArticles import get_articles_api
 
 def index(request):
     linklist = Articles.objects.all()
+    cy=''
     if request.method == "POST":
         word_url = request.POST.get("word_url")
+        cy=word_url
         word_url = [word_url]
         word_main(word_url)
-    return render(request, 'search/index.html', {'linklist': linklist[0:6]})
+    return render(request, 'search/index.html', {'linklist': linklist[0:6],'cy':cy})
 
 
 def logins(request):

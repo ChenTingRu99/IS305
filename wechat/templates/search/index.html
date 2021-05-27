@@ -32,7 +32,13 @@
             line-height: 20px;
             text-align: left;
         }
-
+        .cy-title {
+            margin-left: 100px;
+            margin-bottom: 30px;
+            font-size: 18px;
+            line-height: 20px;
+            text-align: left;
+        }
         .article_title {
             padding-left: 7px;
             padding-right: 7px;
@@ -72,10 +78,6 @@
         a:active {
             color: rgb(116, 114, 114);
             text-decoration: none;
-        }
-
-        .image {
-            
         }
     </style>
 </head>
@@ -127,14 +129,18 @@
         </div>
         <form method="POST">
             {% csrf_token %}
-            <div class="input-group" style="margin-top:0px;margin-left: 100px;margin-right: 100px;margin-bottom: 100px">
+            <div class="input-group" style="margin-top:0px;margin-left: 100px;margin-right: 100px;margin-bottom: 80px">
                 <input type="text" class="form-control" placeholder="https://mp.weixin.qq.com/......" name="word_url" />
                 <span class="input-group-btn">
                     <button class="btn btn-info btn-search" onclick="fresh()">搜索</button>
                 </span>
-                {% load static %}
+                
+            </div>
+            <div class="cy-title">
+                <p>当前显示的是：{{cy}}</p>
             </div>
             <div align="center" style="margin-bottom: 100px;">
+                {% load static %}
                 <img src="{% static "imags/wordout.png" %}" style="width: 600px;">
             </div>
         </form>
