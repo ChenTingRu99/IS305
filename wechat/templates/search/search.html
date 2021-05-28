@@ -124,6 +124,9 @@
                                 <input type="hidden" name="cid" value="{{ cid }}">
                                 <input type="text" name="keyword" value="" class="form-control srhTxt" placeholder="输入标题关键字搜索">
                                 <input type="submit" class="srhBtn" value="">
+                            {% if request.user.is_active %}
+                            <divs style="left:266px;top:10px;position:absolute"><nobr>历史记录：{{show_history}}</nobr></div>
+                            {% endif %}
                             </form>
 						</div>
 					</div>
@@ -158,13 +161,12 @@
 							<div class="pageWrap">
 								<a class="pagePre"><i class="ico-pre">&nbsp;</i></a>
                                 {% for current in pager.page_range %}
-                                    {% if pager.number == current %}
-                                        <a href="search.html?page=current" class="pagenumb cur">{{ current }}</a>
-
+                                {% if pager.number == current %}
+                                    <a href=" {% url 'search:search' page=current %}" class="pagenumb cur">{{ current }}</a>
                                     {% else %}
-                                        <a href="search.html?page=current" class="pagenumb">{{ current }}</a>
+                                    <a href="{% url 'search:search' page=current %}" class="pagenumb">{{ current }}</a>
                                     {% endif %}
-                                {% endfor %}
+                                    {% endfor %}
 								<a href="#" class="pagenext"><i class="ico-next">&nbsp;</i></a>
 							</div>
 						</div>

@@ -1,3 +1,4 @@
+from pymysql import NULL
 from word.word_main import word_main
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -20,7 +21,7 @@ sys.path.append(SPIDER_PATH)
 from spider.getArticles import get_articles_api
 
 # Create your views here.
-
+keyword=''
 
 def index(request):
     linklist = Articles.objects.all()
@@ -74,32 +75,72 @@ def log_out(request):
 
 
 def show_article(request, page=1):
-    if request.method == 'GET':
-        acc_name = request.GET.get('keyword')
+    global keyword
+    search_or_not=request.GET.get('keyword')
+    print(keyword)
+    list = []
+    show_history=''
+    print(page)
+    if request.user.is_active:
+        split_history = User.objects.get(id=request.user.id).first_name.split(",")
+        if len(split_history)>=3:
+            print(len(split_history))
+            reverse_history = split_history[::-1]
+            show_history = reverse_history[0]+'\t'+reverse_history[1]+'\t'+reverse_history[2]
+        elif len(split_history)==2:
+            reverse_history = split_history[::-1]
+            show_history = reverse_history[0]+'\t'+reverse_history[1]
+        elif len(split_history)==1:
+            reverse_history = split_history[::-1]
+            show_history = reverse_history[0]
+        else:
+            show_history =''
+    if page == 1:
+        if request.method == 'GET':
+            acc_name = request.GET.get('keyword')
         if not acc_name:
             return render(request, 'search/search.html')
         print(f'acc_name: {acc_name}')
         articles = get_articles_api(acc_name)
         JsonResponse({'articles': articles})
-    tableNames = acc_name
-    new_N = table_model_factory(tableNames)
+        tableNames = acc_name
+        keyword = acc_name
 
-    if request.user.is_active:
-        userid = request.user.id
-        current_user=User.objects.get(id=userid)
-        history = current_user.first_name
-        
-        if history != '':
-            User.objects.filter(id=userid).update(first_name=Concat(Value(history),Value(',')))    
-            history = User.objects.get(id=userid).first_name
-            User.objects.filter(id=userid).update(first_name=Concat(Value(history),Value(str(acc_name))))
+        new_N = table_model_factory(tableNames)
+
+        if request.user.is_active:
+            userid = request.user.id
+            current_user = User.objects.get(id=userid)
+            history = current_user.first_name
+
+            if history != '':
+                User.objects.filter(id=userid).update(
+                    first_name=Concat(Value(history), Value(',')))
+                history = User.objects.get(id=userid).first_name
+                User.objects.filter(id=userid).update(
+                    first_name=Concat(Value(history), Value(str(acc_name))))
+            else:
+                User.objects.filter(id=userid).update(
+                    first_name=Value(str(acc_name)))
+            if len(split_history)>=2:
+                reverse_history = split_history[::-1]
+                show_history = str(keyword)+'\t'+reverse_history[0]+'\t'+reverse_history[1]
+            elif len(split_history)==1:
+                reverse_history = split_history[::-1]
+                show_history = str(keyword)+'\t'+reverse_history[0]
+            else:
+                show_history = str(keyword)
         else:
-            User.objects.filter(id=userid).update(first_name=Value(str(acc_name)))
+            show_history=''
+        list = new_N.objects.all()
+    else:
+        print("*", keyword, "*")
+        new_N = table_model_factory(keyword)
+        list = new_N.objects.all()
 
-    linklist = new_N.objects.all()
-    
+
     # 产生分页器
-    paginator = BaiduPaginator(linklist, 8)
+    paginator = BaiduPaginator(list, 8)
     print(paginator.count)
     print(paginator.per_page)
     print(page)
@@ -108,3 +149,4 @@ def show_article(request, page=1):
     pager.page_range = paginator.custom_range(paginator.num_pages, page, 5)
 
     return render(request, 'search/search.html', locals())
+
