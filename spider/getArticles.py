@@ -136,7 +136,8 @@ def get_articles_api(acc_name:str, print:bool = False):
     public_name = acc_name
 
     article_list = public_article(public_name)
-    __save__(article_list)
+    if len(article_list) > 0:
+        __save__(article_list)
     
     if print:
         pprint(article_list)
